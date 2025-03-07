@@ -20,7 +20,7 @@ def check_ffmpeg():
     try:
         subprocess.run(["ffmpeg", "-version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
     except FileNotFoundError:
-        raise RuntimeError("❗️ ffmpeg not found. Please install ffmpeg first!")
+        raise RuntimeError("ffmpeg not found. Please install ffmpeg first!")
 
 def download_youtube_video(url):
     """
@@ -78,13 +78,13 @@ def process_csv(input_csv, output_csv):
             for row in reader:
                 url = row['link']
                 if url in processed_links:
-                    print(f"✅ Already processed, skipping: {url}")
+                    print(f"Already processed, skipping: {url}")
                     continue
 
                 video_id = sanitize_filename(row['title'])
 
                 try:
-                    print(f"\n🎥 Processing: {video_id} - {url}")
+                    print(f"\nProcessing: {video_id} - {url}")
 
                     video_file = download_youtube_video(url)
                     transcript = transcribe_with_whisper(video_file)
@@ -94,7 +94,7 @@ def process_csv(input_csv, output_csv):
                     writer.writerow(row)
 
                 except Exception as e:
-                    print(f"❌ Failed to process: {video_id} - {e}")
+                    print(f" Failed to process: {video_id} - {e}")
                     row['transcript'] = f"ERROR: {e}"
                     writer.writerow(row)
 
