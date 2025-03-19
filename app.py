@@ -63,7 +63,7 @@ option = st.radio("Choose Input Method", ("YouTube URL", "Upload File"), horizon
 
 if option == "YouTube URL":
     url = st.text_input("🎥 Enter YouTube URL")
-    if st.button("Download and Transcribe", use_container_width=True):
+    if st.button("Transcribe and Grade", use_container_width=True):
         video_file = download_youtube_video(url)
         if video_file:
             transcript = transcribe_video(video_file)
