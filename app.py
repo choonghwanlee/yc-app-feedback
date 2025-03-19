@@ -67,7 +67,7 @@ if option == "YouTube URL":
         video_file = download_youtube_video(url)
         if video_file:
             transcript = transcribe_video(video_file)
-            #st.text_area("📜 Transcript", transcript, height=200)
+            st.text_area("📜 Transcript", transcript, height=200)
 elif option == "Upload File":
     uploaded_file = st.file_uploader("📂 Upload Video", type=["mp4"], help="Upload a video file for transcription and evaluation.")
     if uploaded_file is not None:
@@ -77,7 +77,7 @@ elif option == "Upload File":
             with open("uploaded_video.mp4", "wb") as f:
                 f.write(uploaded_file.getbuffer())
             transcript = transcribe_video("uploaded_video.mp4")
-            #st.text_area("📜 Transcript", transcript, height=200)
+            st.text_area("📜 Transcript", transcript, height=200)
 
 if 'transcript' in locals() and transcript:
     model, tokenizer, device = load_model()
