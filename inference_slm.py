@@ -50,5 +50,3 @@ def forward(transcript, prompt_type = 'clarity'):
     generated_text = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
     predicted = extract_score(generated_text)
     return generated_text, predicted
-
-
