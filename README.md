@@ -6,7 +6,7 @@
 - **Model Approaches:**
   - **Naive Mean Model:** (Jason)
   - **Non-Deep Learning Models:** A classical machine learning model that doesn't rely on deep learning techniques. 
-  - **Deep Learning Models:** (Yiqing)
+  - **Deep Learning Models:** A multi-task BERT-based model that jointly predicts clarity, team-market fit, and traction using fine-tuned contextual embeddings.
 - **Real-World Application:** A user-friendly web application where users can upload their praticing videos and get their score on the pitch.
 
 ## Evaluation Metric: Quadratic Weighted Kappa (QWK)
@@ -46,7 +46,28 @@ To run the Streamlit demo locally, run `streamlit run app.py`
 
 
 ## Deep Learning Models
-(Yiqing&Jason)
+
+** Bert Model Architecture:**  
+- Uses `bert-base-uncased` as the encoder backbone with gradient checkpointing to reduce memory usage.  
+- Applies a shared BERT encoder followed by three separate classifiers for Clarity, Team-Market Fit, and Traction.
+
+**Data Handling:**  
+- Inputs are tokenized and converted into PyTorch Datasets.  
+- Scores are normalized to 0-based class labels (for 5-class classification).  
+
+**Training & Optimization:**  
+- Multi-task loss using weighted sum of CrossEntropyLoss for the three outputs.  
+- Optimized using AdamW and StepLR scheduler.  
+- Best model checkpoint selected based on highest average QWK score on the validation set.
+
+**Evaluation Metric:**  
+- Quadratic Weighted Kappa (QWK) computed individually for each output and averaged.  
+- Used to compare performance across training, validation, and test sets.
+
+**Results (QWK):**  
+| Model Name | Training Set | Validation Set | 
+|------------|---------------|----------------|
+| BERT (DL)  | 0.60          | 0.49            |
 
 # Application
 
