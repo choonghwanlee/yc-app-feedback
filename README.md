@@ -1,4 +1,4 @@
-# yc-app-feedback
+# Automated Evaluation of Startup Pitches
 # 0. Project Overview
 ## Key Features
 
@@ -38,15 +38,31 @@ To run the Streamlit demo locally, run `streamlit run app.py`
 - **Evaluation:**
   - Computes and prints the macro-average QWK score for both training and validation sets.
   - Predicts on the test set and computes the QWK score for the test set as well.
-## Results(QWK)
+- **Results(QWK)**
 
 | Model Name  | Training Set |Validation Set |Testing Set |
 | ----------- | -------- |-------- |-------- |
 | LinearSVC    | 0.7210   |0.3333   |0.3533   |
 
 
-
 ## Deep Learning Models
+(Yiqing&Jason)
+
+# Application
+
+## Demo Link
+We have two different links for the application, link 1 is based on the better version of model, and link 2 is based on another version of model. Since using the better model would be more costly so it would be taken down after the demo day.
+[**(Link 1)**]()
+[**(Link 2)**]()
+
+## Run Streamlit app locally
+
+To run the code, run the following command:
+
+```bash
+streamlit run app.py
+```
+Click on the Local URL (http://localhost:8501) to open the Streamlit app in your browser.
 
 
   
