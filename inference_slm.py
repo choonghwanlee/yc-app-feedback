@@ -4,6 +4,9 @@ from transformers import LlamaForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from llm_judge.judge_prompts import clarity_system_prompt, team_market_fit_system_prompt, traction_validation_system_prompt
 from llm_judge.label_transcripts import extract_score
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 HF_TOKEN = os.getenv("HF_TOKEN")
 model = LlamaForCausalLM.from_pretrained("jasonhwan/yc-acceptance-predictor-distilled", quantization_config=BitsAndBytesConfig(load_in_4bit=True))
