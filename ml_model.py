@@ -68,7 +68,6 @@ qwk_val_macro = np.mean([np.mean(qwk_val_scores[key]) for key in qwk_val_scores]
 print(f"Training Macro Average QWK Score: {qwk_train_macro:.4f}")
 print(f"Validation Macro Average QWK Score: {qwk_val_macro:.4f}")
 
-print("Columns in y_test:", y_test.columns)
 
 
 # Predict on the test set
