@@ -46,8 +46,8 @@ To run the Streamlit demo locally, run `streamlit run app.py`
 
 
 ## Deep Learning Models
-
-** Bert Model Architecture:**  
+### Model A: BERT-based Multi-Task Classifier
+**Model Architecture:**  
 - Uses `bert-base-uncased` as the encoder backbone with gradient checkpointing to reduce memory usage.  
 - Applies a shared BERT encoder followed by three separate classifiers for Clarity, Team-Market Fit, and Traction.
 
