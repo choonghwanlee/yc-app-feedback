@@ -74,7 +74,7 @@ To run the Streamlit demo locally, run `streamlit run app.py`
 ## Demo Link
 We have two different links for the application, link 1 is based on the better version of model, and link 2 is based on another version of model. Since using the better model would be more costly so it would be taken down after the demo day.
 [**(Link 1)**]()
-[**(Link 2)**]()
+[**(Link 2)**](https://huggingface.co/spaces/yiqing111/yc_app_feedback)
 
 ## Run Streamlit app locally
 
