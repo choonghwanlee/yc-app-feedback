@@ -105,7 +105,7 @@ Instead of simply fine-tuning a classifier to directly predict the score, we exp
 2. Fine-tuning Llama3.2 with Unsloth using 4-bit quantization and Low Rank Adaptation
 3. Trained for 3 epochs, model with lowest model selected
 
-**Final Results (QWK):**  
+## Final Results (QWK): 
 | Model Name | Validation Set |
 |------------|---------------|
 | Naive | 0.0 |
