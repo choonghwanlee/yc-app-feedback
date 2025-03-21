@@ -67,7 +67,9 @@ Thus, we want to make sure that our ML and DL models have a QWK greater than our
 
 ## Deep Learning Models
 
-### **Bert Model Architecture:**
+### Model A: BERT-based Multi-Task Classifier
+
+**Model Architecture:**
 
 - Uses `bert-base-uncased` as the encoder backbone with gradient checkpointing to reduce memory usage.
 - Applies a shared BERT encoder followed by three separate classifiers for Clarity, Team-Market Fit, and Traction.
