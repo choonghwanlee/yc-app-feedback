@@ -5,7 +5,7 @@ import whisper
 import subprocess
 import os
 import pandas as pd
-from dl import PitchEvaluationModel  # Import model
+from inference_slm import model, tokenizer, forward  # Import model
 
 def download_youtube_video(url, output_file="pitch_video.mp4"):
     """Download YouTube video using yt-dlp."""
@@ -30,30 +30,6 @@ def transcribe_video(video_file):
         st.error("❌ An error occurred during transcription.")
         return ""
 
-def load_model():
-    """Load the trained model."""
-    try:
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        model = PitchEvaluationModel("bert-base-uncased").to(device)
-        model.load_state_dict(torch.load("best_pitch_model.pt", map_location=device))
-        model.eval()
-        tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-        return model, tokenizer, device
-    except Exception as e:
-        st.error("❌ Failed to load the model.")
-        return None, None, None
-
-def evaluate_pitch(transcript, model, tokenizer, device):
-    """Evaluate transcript using the trained model."""
-    try:
-        inputs = tokenizer(transcript, return_tensors="pt", truncation=True, padding="max_length", max_length=512)
-        input_ids, attention_mask = inputs["input_ids"].to(device), inputs["attention_mask"].to(device)
-        with torch.no_grad():
-            clarity, team, traction = model(input_ids, attention_mask)
-        return torch.argmax(clarity).item() + 1, torch.argmax(team).item() + 1, torch.argmax(traction).item() + 1
-    except Exception as e:
-        st.error("❌ Error in evaluation process.")
-        return None, None, None
 
 # Streamlit App UI
 st.set_page_config(page_title="Pitch Evaluation App", layout="wide")
@@ -80,24 +56,21 @@ elif option == "Upload File":
             st.text_area("📜 Transcript", transcript, height=200)
 
 if 'transcript' in locals() and transcript:
-    model, tokenizer, device = load_model()
-    if model is not None:
-        clarity, team, traction = evaluate_pitch(transcript, model, tokenizer, device)
-        if None not in (clarity, team, traction):
-            # Create a DataFrame for the scoring table
-            categories = ["Clarity & Conciseness", "Team-Market Fit", "Traction / Validation"]
-            scores = [clarity, team, traction]
-            descriptions = [
-                "Extremely clear, direct, and easy to follow;no fluff, just essential details." if clarity == 5 else "Mostly clear, with only minor unnecessary details." if clarity == 4 else "Somewhat clear but includes extra details or minor distractions." if clarity == 3 else "Lacks clarity; hard to follow; too much fluff or filler." if clarity == 2 else "Unclear, rambling, and difficult to understand.",
-                "Founders have highly relevant skills & experience to execute this successfully." if team == 5 else "Founders have good experience but may lack some key skills." if team == 4 else "Some relevant experience but gaps in expertise." if team == 3 else "Limited relevant experience; execution ability is questionable." if team == 2 else "No clear expertise in this space; team seems unqualified.",
-                "Strong proof of demand (users, revenue, engagement, partnerships, etc.)." if traction == 5 else "Good early validation with promising signs of demand." if traction == 4 else "Some traction but not yet convincing." if traction == 3 else "Weak or vague traction, with little evidence of demand." if traction == 2 else "No validation or proof that people want this."
-            ]
-            df = pd.DataFrame({"Category": categories, "Score (1-5)": scores, "Evaluation": descriptions})
-            
-            st.write("## 📊 Evaluation Results")
-            st.table(df)
+    clarity_text, clarity = forward(transcript, prompt_type='clarity')
+    team_text, team = forward(transcript, prompt_type='team_market_fit')
+    traction_text, traction = forward(transcript, prompt_type='traction_validation')
+    
+    if None not in (clarity, team, traction):
+        # Create a DataFrame for the scoring table
+        categories = ["Clarity & Conciseness", "Team-Market Fit", "Traction / Validation"]
+        scores = [clarity, team, traction]
+        explanations = [clarity_text, team_text, traction_text]
+        df = pd.DataFrame({"Category": categories, "Score (1-5)": scores, "Explanation": explanations})
+        
+        st.write("## 📊 Evaluation Results")
+        st.table(df)
 
-        if ((clarity + team + traction)/3) >=3.5:
+        if ((clarity + team + traction)/3) >= 3.5:
             st.write("## 🎉 Congrats! You have a high possibility to be accepted")
         else:
             st.write("## 🙌 Need More Practice, but don't give up!")
