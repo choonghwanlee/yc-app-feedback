@@ -1,15 +1,14 @@
 
 import torch
-from unsloth import FastLanguageModel
+from transformers import LlamaForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from llm_judge.judge_prompts import clarity_system_prompt, team_market_fit_system_prompt, traction_validation_system_prompt
 from llm_judge.label_transcripts import extract_score
+import os
 
-model, tokenizer = FastLanguageModel.from_pretrained(
-    "jasonhwan/yc-acceptance-prediction-distilled",
-    max_seq_length = 4096,
-    load_in_4bit=True,
-    dtype=None,
-)
+HF_TOKEN = os.getenv("HF_TOKEN")
+model = LlamaForCausalLM.from_pretrained("jasonhwan/yc-acceptance-predictor-distilled", quantization_config=BitsAndBytesConfig(load_in_4bit=True))
+model.eval()
+tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-3B-Instruct", token = HF_TOKEN)
 
 def forward(transcript, prompt_type = 'clarity'):
     '''
@@ -23,7 +22,6 @@ def forward(transcript, prompt_type = 'clarity'):
         predicted (int): the predicted score
     '''
     device = 'mps' if torch.backends.mps.is_available() else 'cuda' if torch.cuda.is_available() else 'cpu'
-    FastLanguageModel.for_inference(model)
     if prompt_type == 'clarity':
         system_prompt = clarity_system_prompt
         user_prompt = f"Score the clarity of this transcript: {transcript}"
@@ -50,3 +48,5 @@ def forward(transcript, prompt_type = 'clarity'):
     generated_text = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
     predicted = extract_score(generated_text)
     return generated_text, predicted
+
+
