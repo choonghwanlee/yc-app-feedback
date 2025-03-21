@@ -41,7 +41,7 @@ To run the Streamlit demo locally, run `streamlit run app.py`
 ## Results(QWK)
 
 | Model Name  | Training Set |Validation Set |Testing Set |
-| ----------- | -------- |
+| ----------- | -------- |-------- |-------- |
 | LinearSVC    | 0.7210   |0.3333   |0.3533   |
 
 
