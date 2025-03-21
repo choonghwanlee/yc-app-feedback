@@ -38,6 +38,12 @@ To run the Streamlit demo locally, run `streamlit run app.py`
 - **Evaluation:**
   - Computes and prints the macro-average QWK score for both training and validation sets.
   - Predicts on the test set and computes the QWK score for the test set as well.
+## Results(QWK)
+
+| Model Name  | Training Set |Validation Set |Testing Set |
+| ----------- | -------- |
+| LinearSVC    | 0.7210   |0.3333   |0.3533   |
+
 
 
 ## Deep Learning Models
