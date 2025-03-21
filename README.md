@@ -28,10 +28,6 @@ To run the Streamlit demo locally, run `streamlit run app.py`
 (Jason)
 
 ## Non-Deep Learning Models
-
-
-## Deep Learning Models
-
 - **Feature Extraction:**
   - Converts the textual data into numerical features using TfidfVectorizer.
   - Applies PCA to reduce dimensionality of the TF-IDF features.
@@ -42,4 +38,9 @@ To run the Streamlit demo locally, run `streamlit run app.py`
 - **Evaluation:**
   - Computes and prints the macro-average QWK score for both training and validation sets.
   - Predicts on the test set and computes the QWK score for the test set as well.
+
+
+## Deep Learning Models
+
+
   
