@@ -8,12 +8,12 @@ To mitigate this issue, we are developing an app that evaluates a founder's star
 
 ## Key Features
 
-- **Novel Dataset:** We personally scraped, transcribed, and scored close to 500 YC application videos across numerous batches. Transcription was done with a Whisper model, while scoring was done with GPT-4o acting as an LLM-as-a-judge. We evaluated pitches across 3 different categories: clarity, team-market fit, and traction/validation. These criterias were chosen based off of publicly available advice from VCs and YCombinator partners.
+- **Novel Dataset:** We personally scraped, transcribed, and scored close to 500 YC application videos across numerous batches. Transcription was done with a Whisper model, while scoring was done with GPT-4o acting as an LLM-as-a-judge. We evaluated pitches across 3 different categories: clarity, team-market fit, and traction/validation. These criterias were chosen based off of publicly available advice from VCs and YCombinator partners. [Find the dataset here](https://huggingface.co/datasets/jasonhwan/yc-startup-pitches-with-scores).
 - **Model Approaches:**
-  - **Naive Mean Model:** The naive mean is a random selection model that serves as the baseline (low bar) of performance for this task.
-  - **Non-Deep Learning Models:** A classical machine learning model that doesn't rely on deep learning techniques.
-  - **Deep Learning Models:** A multi-task BERT-based model that jointly predicts clarity, team-market fit, and traction using fine-tuned contextual embeddings.
-- **Real-World Application:** A user-friendly web application where users can upload their praticing videos and get their score on the pitch.
+  - **Naive Mean Model:** The naive mean is a random selection model that sets the baseline "low bar" performance for this task.
+  - **Non-Deep Learning Model:** A classical machine learning model that doesn't rely on deep learning techniques.
+  - **Deep Learning Models:** A multi-task BERT-based model that jointly predicts clarity, team-market fit, and traction using fine-tuned contextual embeddings **AND** a fine-tuned Llama3.2 model that learns to jointly generate both scores and their reasoning traces.
+- **Real-World Application:** A user-friendly web application where users can upload their startup pitch practice videos and receive feedback & scores.
 
 ## Evaluation Metric: Quadratic Weighted Kappa (QWK)
 
@@ -33,7 +33,9 @@ QWK has a range of -1 to 1, where 1 is perfect agreement and scores below 0 sign
 
 To run the Streamlit demo locally, run `streamlit run app.py`
 
-(fill out more after reorganize the files)
+To replicate the training & evaluation for our models, navigate to the `train_scripts/` folder and run `python my_script.py` (i.e. `python dl.py`)
+
+To replicate or tweak the GPT-4o class labels, navigate to the `llm_judge/` folder and run `python label_transcripts.py` after any necessary changes.
 
 # 3. Approaches
 
@@ -105,13 +107,14 @@ Instead of simply fine-tuning a classifier to directly predict the score, we exp
 2. Fine-tuning Llama3.2 with Unsloth using 4-bit quantization and Low Rank Adaptation
 3. Trained for 3 epochs, model with lowest model selected
 
-## Final Results (QWK): 
-| Model Name | Validation Set |
-|------------|---------------|
-| Naive | 0.0 |
-| LinearSVC | 0.35 |
-| BERT (DL) | 0.49 |
-| Llama3.2 + CoT (DL) | 0.72 |
+## Final Results (QWK):
+
+| Model Name          | Validation Set |
+| ------------------- | -------------- |
+| Naive               | 0.0            |
+| LinearSVC           | 0.35           |
+| BERT (DL)           | 0.49           |
+| Llama3.2 + CoT (DL) | 0.72           |
 
 We note that distilling reasoning into a small language model yielded superior results to other approaches, trumping the QWR of the next best model by 48%.
 
@@ -120,7 +123,7 @@ We note that distilling reasoning into a small language model yielded superior r
 ## Demo Link
 
 We have two different links for the application, link 1 is based on the better version of model, and link 2 is based on another version of model. Since using the better model would be more costly so it would be taken down after the demo day.
-[**(Link 1)**]()
+[**(Link 1)**](https://huggingface.co/spaces/jasonhwan/yc_app_feedback_turbo)
 [**(Link 2)**](https://huggingface.co/spaces/yiqing111/yc_app_feedback)
 
 ## Run Streamlit app locally

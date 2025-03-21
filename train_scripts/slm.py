@@ -85,7 +85,7 @@ def formatting_prompts_func(examples, model, tokenizer, train=True):
         tokenizer.apply_chat_template(conversation, tokenize=False, add_generation_prompt=False if train else True)
       )
       if not train:
-            inputs = tokenizer.apply_chat_template(
+        inputs = tokenizer.apply_chat_template(
             conversation,
             tokenize = True,
             add_generation_prompt = True, # Must add for generation
@@ -156,7 +156,7 @@ if __name__ == '__main__':
     train_dataset = train_dataset.map(formatting_prompts_func, fn_kwargs={'tokenizer': tokenizer}, batched = True,)
     train_model(model, tokenizer, train_dataset)
     model.push_to_hub("jasonhwan/yc-acceptance-predictor-distilled") # Online saving
-    tokenizer.push_to_hub("jasonhwan/yc-acceptance-prediction-distilled") # Online saving
+    tokenizer.push_to_hub("jasonhwan/yc-acceptance-predictor-distilled") # Online saving
     
     FastLanguageModel.for_inference(model) # Enable native 2x faster inference
     eval_dataset = eval_dataset.map(formatting_prompts_func, fn_kwargs={'model': model, 'tokenizer': tokenizer, 'train': False}, batched = True,)
