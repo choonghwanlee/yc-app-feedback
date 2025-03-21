@@ -4,8 +4,7 @@ from dotenv import load_dotenv
 import os
 import re
 from datasets import Dataset, DatasetDict
-from judge_prompts import clarity_system_prompt, team_market_fit_system_prompt, traction_validation_system_prompt
-
+from llm_judge.judge_prompts import clarity_system_prompt, team_market_fit_system_prompt, traction_validation_system_prompt
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
